@@ -16,9 +16,7 @@ interface HeadlineData {
 })
 export class AppComponent implements OnInit {
   headlines: HeadlineData[] = [];
-
-  constructor(private bbcWebCrawlerService: BbcService) {}
-
+  constructor(private readonly bbcWebCrawlerService: BbcService) {}
   ngOnInit(): void {
     this.bbcWebCrawlerService.fetchBbcHeadlines().subscribe({
       next: (data: HeadlineData[]) => {

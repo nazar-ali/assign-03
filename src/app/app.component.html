@@ -1,5 +1,10 @@
-<h1>BBC Headlines</h1>
-<ul>
-  <li *ngFor="let headline of headlines">{{ headline }}</li>
-  <li *ngFor="let description of description">{{ description }}</li>
-</ul>
+<div *ngIf="headlines.length > 0; else noHeadlines">
+  <div *ngFor="let headline of headlines">
+    <h3>{{ headline.headline }}</h3>
+    <p>{{ headline.description }}</p>
+  </div>
+</div>
+
+<ng-template #noHeadlines>
+  <p>No headlines available.</p>
+</ng-template>

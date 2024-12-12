@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { BbcService } from './bbc.end.point.service';
 import { NgForOf, NgIf } from '@angular/common';
+
+interface HeadlineData {
+  headline: string;
+  description: string;
+}
+
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -9,17 +15,21 @@ import { NgForOf, NgIf } from '@angular/common';
   imports: [NgIf, NgForOf],
 })
 export class AppComponent implements OnInit {
-  headlines: string[] = [];
-  description: string[] = [];
+  headlines: HeadlineData[] = [];
+
   constructor(private bbcWebCrawlerService: BbcService) {}
+
   ngOnInit(): void {
-    this.bbcWebCrawlerService?.fetchBbcHeadlines()?.subscribe({
-      next: (data: any) => {
-        this.headlines = data?.headlines;
-        this.description = data?.description;
+    this.bbcWebCrawlerService.fetchBbcHeadlines().subscribe({
+      next: (data: HeadlineData[]) => {
+        this.headlines = data;
       },
-      error: (error) => {
-        console.error('Error fetching headlines:', error);
+      error: (error: unknown) => {
+        if (error instanceof Error) {
+          console.error('Error fetching headlines:', error.message);
+        } else {
+          console.error('Unknown error:', error);
+        }
       },
     });
   }
